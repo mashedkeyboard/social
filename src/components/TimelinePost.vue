@@ -1,11 +1,4 @@
 <template>
-	<div class="entry-content">
-		<div v-if="item.actor_info" class="post-avatar">
-			<avatar v-if="item.local && item.type!=='SocialAppNotification'" :size="32" :user="item.actor_info.preferredUsername"
-				:display-name="item.actor_info.account" :disable-tooltip="true" />
-			<avatar v-else :size="32" :url="avatarUrl"
-				:disable-tooltip="true" />
-		</div>
 		<div class="post-content">
 			<div class="post-header">
 				<div class="post-author-wrapper">
@@ -51,11 +44,9 @@
 				</div>
 			</div>
 		</div>
-	</div>
 </template>
 
 <script>
-import Avatar from '@nextcloud/vue/dist/Components/Avatar'
 import * as linkify from 'linkifyjs'
 import pluginMention from 'linkifyjs/plugins/mention'
 import 'linkifyjs/string'
@@ -68,7 +59,6 @@ pluginMention(linkify)
 export default {
 	name: 'TimelinePost',
 	components: {
-		Avatar,
 		PostAttachment
 	},
 	mixins: [popoverMenu, currentUser],
@@ -122,9 +112,6 @@ export default {
 			message = message.replace(/(?:\r\n|\r|\n)/g, '<br>')
 			message = this.$twemoji.parse(message)
 			return message
-		},
-		avatarUrl() {
-			return OC.generateUrl('/apps/social/api/v1/global/actor/avatar?id=' + this.item.attributedTo)
 		},
 		hasAttachments() {
 			return (typeof this.item.attachment !== 'undefined')
@@ -194,17 +181,6 @@ export default {
 		opacity: .7;
 	}
 
-	.post-avatar {
-		margin: 5px;
-		margin-right: 10px;
-		border-radius: 50%;
-		overflow: hidden;
-		width: 32px;
-		height: 32px;
-		min-width: 32px;
-		flex-shrink: 0;
-	}
-
 	.post-timestamp {
 		width: 120px;
 		text-align: right;
@@ -249,6 +225,8 @@ export default {
 
 	.post-content {
 		flex-grow: 1;
+		    grid-column: 2;
+		    grid-row: 2;
 	}
 
 	.post-header {
